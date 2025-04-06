@@ -1,0 +1,107 @@
+import { VideoType } from '@/lib/definitions'
+import React from 'react'
+import DetailedSearchInput from './DetailedSearchInput'
+import Image from 'next/image'
+import { Button } from '../ui/button'
+import { DetailTypeButton } from './TypeButton'
+import { Code, Facebook, MessageCircleMoreIcon, Repeat2, Send } from 'lucide-react'
+import { CommentTabs } from './CommentTabs'
+import Link from 'next/link'
+import DetailLikeBtn from './DetailLikeBtn'
+import 'next-cloudinary/dist/cld-video-player.css';
+import { getQueryClient } from '@/react-query-config/get-query-client'
+import { fetchVideoComments } from '@/lib/pokemon'
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+import DetailCopyInput from './DetailCopyInput'
+import DetailDescription from './DetailDescription'
+import DetailVideoPlayer from './DetailVideoPlayer'
+import DetailFollowBtn from './DetailFollowBtn'
+import BookmarkBtn from './BookmarkBtn'
+
+const DetailProVideo = ({item, userId}:{item:VideoType; userId:string}) => {
+
+    const queryClient = getQueryClient()
+    const query = fetchVideoComments(item?._id)
+    void queryClient.prefetchQuery(query)
+
+    const imageUrl = item?.author?.image as string;
+    const ShareUrl = `${process.env.NEXT_PUBLIC_URL}/@${item?.author?.name}/video/${item?._id}`
+
+
+   
+  return (
+    <main className=' flex flex-row rounded-none hunt overflow-hidden'>
+        <div className=" flex bg-foreground justify-center grow">
+            <section id='detail' className=" relative w-[419px]">
+                <div className=" px-5 w-full z-50 absolute top-5">
+                    <DetailedSearchInput/>
+                </div>
+                
+                <DetailVideoPlayer videoId={item?._id} videoUrl={item?.videoUrl}/>
+            </section>
+            
+         </div>
+         <div className=" pt-5 w-[544px] h-full bg-light-muted">
+            <section className=" space-y-3 p-4">
+                {/* profile box */}
+                <div className=" space-y-2 p-4 bg-[#1B1B1B] rounded-2xl">
+                    <div className=' flex gap-2 items-center'>
+                        <Link className=" gap-2 flex items-center" href={`/@${item?.author?.name}`}>
+                            <Image src={imageUrl} width={100} height={100} alt="profile image" className=" w-[40px] h-[40px] rounded-full"  />
+                            <div>
+                                <span className=" block font-bold text-lg">{item?.author?.fullname}</span>
+                                <span className=" block font-medium text-sm">{item?.author?.name}</span>
+                            </div> 
+                        </Link>
+                        
+                        {item?.author?._id == userId ? 
+                        <Button asChild size={'lg'} className=' ml-auto rounded-none bg-primary-custom'>
+                            <Link href={`/@${item?.author?.name}`}>View Profile</Link></Button>
+                        :
+                        <DetailFollowBtn celebrityId={item?.author?._id as string} userId={userId}/>
+                        }
+                    </div>
+
+                    <DetailDescription description={item?.description}/>
+                </div>
+
+                {/* social links */}
+                <section className=" flex justify-between items-center">
+
+                    <div className=" flex items-center gap-3">
+                        <DetailLikeBtn videoId={item?._id} userId={userId} count={item?.likes as number}/>
+
+                        <DetailTypeButton isDone={false}
+                            beforeIcon={<MessageCircleMoreIcon className=' size-5 text-muted-custom-text'/>} text={item?.comment_count as number}/>
+
+                        <BookmarkBtn userId={userId} video={item}/>
+
+                    </div>
+
+                    <div className=" flex items-center gap-2">
+                        <Button className=" size-6 bg-amber-400 rounded-full" size={'icon'}><Repeat2/></Button>
+                        <Button className=" size-6 bg-muted-custom rounded-full" size={'icon'}><Code/></Button>
+                        <Button className=" size-6 bg-primary-custom rounded-full" size={'icon'}><Send/></Button>
+                        <Button className=" size-6 bg-blue-500 rounded-full" size={'icon'}><Facebook/></Button>
+                    </div>
+                    
+                </section>
+
+                {/* share link inputs */}
+
+                <section>
+                    <DetailCopyInput ShareUrl={ShareUrl}/>
+                </section>
+            </section>
+
+            <HydrationBoundary state={dehydrate(queryClient)}>
+                <CommentTabs userId={userId} videoId={item?._id}/>
+            </HydrationBoundary>
+             
+
+         </div>
+    </main>
+  )
+}
+
+export default DetailProVideo
