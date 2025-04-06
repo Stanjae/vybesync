@@ -49,7 +49,7 @@ useEffect(()=>{
   const [show, setShow]= useState(false)
   return (
     <div id={`video-${id}`} className=' bg-foreground text-background h-screen containt overflow-hidden relative justify-center pt-5 gap-4 flex'>
-      <section ref={ref} id='foryou-id' className='z-50 relative w-full sm:w-[419px]'>
+      <section ref={ref} id='foryou-id' className=' relative w-full sm:w-[419px]'>
         <CldVideoPlayer id={item?._id} key={item?._id} videoRef={vidref} className=' z-50 border-none outline-none rounded-2xl'
         width="419"
         height="744"
