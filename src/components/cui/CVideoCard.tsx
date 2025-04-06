@@ -48,7 +48,7 @@ useEffect(()=>{
 
   const [show, setShow]= useState(false)
   return (
-    <div id={`video-${id}`} className=' bg-foreground text-background h-screen containt overflow-hidden relative justify-center pt-5 gap-4 flex'>
+    <div id={`video-${id}`} className=' bg-foreground text-background h-screen containt overflow-hidden relative justify-center pt-5 gap-4 block sm:flex'>
       <section ref={ref} id='foryou-id' className=' relative w-full sm:w-[419px]'>
         <CldVideoPlayer id={item?._id} key={item?._id} videoRef={vidref} className=' z-50 border-none outline-none rounded-2xl'
         width="419"
@@ -81,7 +81,7 @@ useEffect(()=>{
       </section>
         
 
-         <div className=' absolute bottom-5 right-5 md:right-0 md:relative md:-top-5 flex flex-col gap-4 items-center justify-end'>
+         <div className=' absolute z-30 bottom-5 right-5 md:right-0 md:relative md:-top-5 flex flex-col gap-4 items-center justify-end'>
           {/* author follow */}
             <FollowAuthorMini userId={session?.user?.id as string} item={item?.author} />
 
