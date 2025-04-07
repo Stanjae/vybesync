@@ -16,7 +16,7 @@ export default async function PublicPagesLayout({
             <div className=" fixed bg-foreground text-background top-0 left-0 h-full z-50 w-0 hidden md:block md:w-[280px]"><CSidebar session={session}/></div>
             <div className=" bg-foreground text-background custom-scroll ml-0 md:ml-[280px] grow ">
                   {children}
-                  <MobileNav/>   
+                  <MobileNav session={session}/>   
             </div>
         </section>
       </main>
