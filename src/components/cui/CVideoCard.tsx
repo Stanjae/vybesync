@@ -69,7 +69,7 @@ useEffect(()=>{
         <div className=' [text-shadow:_0_4px_8px_#ea284e] z-30 shadow-2xl  text-center text-pretty text-2xl w-full bg-foreground/50 absolute left-1/2 top-1/12 -translate-x-1/2'>
         {item?.caption}
         </div>
-        <div className=' w-11/12 z-30 absolute bottom-11 space-y-1 left-3'>
+        <div className=' w-11/12 z-30 absolute bottom-8 md:bottom-11 space-y-1 left-3'>
           <a href={`/@${item?.author?.name?.toLowerCase()}`} className=' leading-[21px] text-background font-semibold text-base flex gap-1 items-center'>{item?.author?.fullname} <LucideBadgeCheck className=' text-[#20d5ec]'/></a>
           <div onClick={()=> setShow(prev => !prev)}  className={` ${show ? "text-pretty transition-all duration-500":" transition-all duration-500 overflow-hidden text-ellipsis whitespace-nowrap"} bg-foreground/10 transition-all duration-500  text-sm text-background/85`}>
             {item?.description}
