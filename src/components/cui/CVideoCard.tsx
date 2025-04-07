@@ -81,7 +81,7 @@ useEffect(()=>{
       </section>
         
 
-         <div className=' absolute z-50 bottom-10 right-5 md:right-0 md:relative md:-top-5 flex flex-col gap-4 items-center justify-end'>
+         <div className=' absolute z-50 top-1/2 -translate-y-1/2 md:translate-y-0 right-5 md:right-0 md:relative md:-top-5 flex flex-col gap-4 items-center justify-end'>
           {/* author follow */}
             <FollowAuthorMini userId={session?.user?.id as string} item={item?.author} />
 
