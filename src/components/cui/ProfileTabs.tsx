@@ -35,8 +35,8 @@ const ProfileTabs = ({userId, celebrityId, createdVideos}:{userId:string; celebr
 
   return (
     <Tabs value={tabs} onValueChange={(e)=> {setTabs(e)}} className="h-full relative ">
-        <div className=' flex border-b border-b-muted-custom/50 '>
-            <TabsList className={`grid gap-1 px-5 border-b border-b-muted-custom rounded-none
+        <div className=' flex md:flex-row flex-col border-b border-b-muted-custom/50 '>
+            <TabsList className={`grid gap-1 w-full md:w-auto px-5 border-b border-b-muted-custom rounded-none
              bg-light-muted text-background ${userId == celebrityId ? "grid-cols-3":"grid-cols-2"}`}>
                 <TabsTrigger className={`${tabs == "videos" ? 'bg-light-muted!  border-b-background ':''}
                 text-background border-b-2 hover:border-b-background transition-all duration-500 rounded-none`} value="videos">
@@ -52,13 +52,13 @@ const ProfileTabs = ({userId, celebrityId, createdVideos}:{userId:string; celebr
                 </TabsTrigger>}
             </TabsList>
 
-        <Tabs className='ml-auto' value={tabs2} onValueChange={(e)=> handleChange(e)}>
-            <TabsList className="grid  bg-light-muted text-background grid-cols-3">
-                <TabsTrigger className={`${ tabs2 == "desc" ? "bg-muted-custom-text!":""}  text-background`} value="desc">Latest</TabsTrigger>
-                <TabsTrigger className={`${ tabs2 == "views" ? "bg-muted-custom-text!":""}  text-background`} value="views">Popular</TabsTrigger>
-                <TabsTrigger className={`${ tabs2 == "asc" ? "bg-muted-custom-text!":""}  text-background`} value="asc">Oldest</TabsTrigger>
-            </TabsList>
-        </Tabs>    
+            <Tabs className='ml-auto hidden md:block' value={tabs2} onValueChange={(e)=> handleChange(e)}>
+                <TabsList className="grid  bg-light-muted text-background grid-cols-3">
+                    <TabsTrigger className={`${ tabs2 == "desc" ? "bg-muted-custom-text!":""}  text-background`} value="desc">Latest</TabsTrigger>
+                    <TabsTrigger className={`${ tabs2 == "views" ? "bg-muted-custom-text!":""}  text-background`} value="views">Popular</TabsTrigger>
+                    <TabsTrigger className={`${ tabs2 == "asc" ? "bg-muted-custom-text!":""}  text-background`} value="asc">Oldest</TabsTrigger>
+                </TabsList>
+            </Tabs>    
         </div>
         
 
