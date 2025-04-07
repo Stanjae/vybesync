@@ -12,9 +12,6 @@ import { BadgeCheck, MoreHorizontal, Settings, Share } from 'lucide-react';
 import Image from 'next/image';
 import React, { Suspense } from 'react'
 
-/* export const revalidate = 10
-
-export const dynamicParams = true */
 
 const page = async({params, searchParams}: {searchParams: Promise<SearchParams>, params: Promise<{ profile: string }>}) => {
     const { profile } = await params;

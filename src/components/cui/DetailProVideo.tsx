@@ -30,8 +30,8 @@ const DetailProVideo = ({item, userId}:{item:VideoType; userId:string}) => {
 
    
   return (
-    <main className=' flex flex-row rounded-none hunt overflow-hidden'>
-        <div className=" flex bg-foreground justify-center grow">
+    <main className=' flex flex-row bg-foreground rounded-none hunt overflow-hidden'>
+        <div className=" h-full flex bg-foreground justify-center grow">
             <section id='detail' className=" relative w-[419px]">
                 <div className=" px-5 w-full z-50 absolute top-5">
                     <DetailedSearchInput/>
@@ -41,7 +41,7 @@ const DetailProVideo = ({item, userId}:{item:VideoType; userId:string}) => {
             </section>
             
          </div>
-         <div className=" pt-5 w-[544px] h-full bg-light-muted">
+         <div className=" pt-5 w-0 hidden lg:block md:w-[544px] h-full bg-light-muted">
             <section className=" space-y-3 p-4">
                 {/* profile box */}
                 <div className=" space-y-2 p-4 bg-[#1B1B1B] rounded-2xl">
