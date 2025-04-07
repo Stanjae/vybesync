@@ -5,14 +5,13 @@ import React, { useRef } from 'react'
 import 'next-cloudinary/dist/cld-video-player.css';
 import millify from 'millify'
 import Image from 'next/image'
-import { urlFor } from '@/sanity/client'
 import { Heart, Play } from 'lucide-react'
 import CosVideoPlayer from './CosVideoPlayer'
 
 const ProfileVideoCard = ({item, isAuthor, isTitle, isExplore}:{isExplore?:boolean; item:VideoType; isAuthor:boolean; isTitle?:boolean}) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const imageUrl = item?.author?.image ? item?.author?.image : urlFor(item?.author?.profile_image)?.url()
+  const imageUrl = item?.author?.image
   return (
     <div>
       <Link id='profile' onMouseOver={()=> videoRef.current?.play()} onMouseLeave={()=>videoRef.current?.pause()}  key={item?._id} className='block space-y-2 relative' href={`/@${item?.author?.name}/video/${item?._id}`}>
