@@ -16,7 +16,7 @@ const page = async() => {
   return (
     <section id="example" className='relative bg-foreground text-background h-screen'>
    
-      {session?.user ? <CDropDown contentStyle='bg-foreground/80 border-muted-custom w-[200px]' className='fixed z-30 right-10 top-[30px]' trigger={ <CAvatar session={session}/>}>
+      {session?.user ? <CDropDown contentStyle='bg-foreground/80 border-muted-custom w-[200px]' className=' hidden md:block fixed z-30 right-10 top-[30px]' trigger={ <CAvatar session={session}/>}>
         <div>
           <DropdownMenuItem className=' leading-6 text-lg py-2 font-medium text-background px-3.5'>Profile</DropdownMenuItem>
           <form action={async () => {
@@ -30,7 +30,7 @@ const page = async() => {
         </div>
       </CDropDown>
       :
-      <Button asChild size={'lg'} className=' bg-primary-custom hover:bg-primary-custom/75 z-30 rounded-4xl px-7 fixed right-10 top-[30px]'>
+      <Button asChild size={'lg'} className=' hidden md:block bg-primary-custom hover:bg-primary-custom/75 z-30 rounded-4xl px-7 fixed right-10 top-[30px]'>
         <Link href={`/auth/sign-in`}>Login</Link></Button>}
 
      
