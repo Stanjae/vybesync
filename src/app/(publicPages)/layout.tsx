@@ -1,6 +1,7 @@
 import CSidebar from "@/components/cui/CSidebar";
 import React from "react";
 import { auth } from "@/auth";
+import MobileNav from "@/components/cui/mobile/MobileNav";
 //import NotificationWrapper from "@/components/cui/NotificationWrapper";
 export default async function PublicPagesLayout({
     children,
@@ -14,7 +15,8 @@ export default async function PublicPagesLayout({
         <section className=" bg-foreground text-background h-full flex">
             <div className=" fixed bg-foreground text-background top-0 left-0 h-full z-50 w-0 hidden md:block md:w-[280px]"><CSidebar session={session}/></div>
             <div className=" bg-foreground text-background custom-scroll ml-0 md:ml-[280px] grow ">
-                  {children}   
+                  {children}
+                  <MobileNav/>   
             </div>
         </section>
       </main>
