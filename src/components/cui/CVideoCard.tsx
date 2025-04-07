@@ -49,7 +49,7 @@ useEffect(()=>{
   const [show, setShow]= useState(false)
   return (
     <div id={`video-${id}`} className=' bg-foreground text-background h-screen containt overflow-hidden relative justify-center pt-5 gap-4 block sm:flex'>
-      <section ref={ref} id='foryou-id' className='z-10 px-5 md:px-0 relative w-full sm:w-[419px]'>
+      <section ref={ref} id='foryou-id' className='z-10 px-2 md:px-0 relative w-full sm:w-[419px]'>
         <CosVideoPlayer id={item?._id} key={item?._id} videoRef={vidref} className=' border-none outline-none rounded-2xl'
         width="419"
         height="744"
