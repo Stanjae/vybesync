@@ -28,7 +28,7 @@ const MobileNav = ({session}:{session:Session | null}) => {
         router.push(item == '/profile' ? `/@${session?.user?.name}`: item);
     }
   return (
-    <section className=' block w-full py-1 md:hidden bg-foreground fixed bottom-0 left-0'>
+    <section className=' block z-40 w-full py-1 md:hidden bg-foreground fixed bottom-0 left-0'>
         <LoginDialogDemo setOpen={setOpen} open={open}/>
         <nav className=' justify-center grid grid-cols-5'>
             {navigation.map(nav => ( nav.title == "Upload" || nav.title == "Profile" ?
