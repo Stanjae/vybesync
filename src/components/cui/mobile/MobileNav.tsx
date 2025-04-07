@@ -14,7 +14,7 @@ const navigation = [
 ]
 const MobileNav = () => {
   return (
-    <section className=' block w-full md:hidden bg-foreground fixed bottom-0 left-0'>
+    <section className=' block w-full py-1 md:hidden bg-foreground fixed bottom-0 left-0'>
         <nav className=' justify-center grid grid-cols-5'>
             {navigation.map(nav => ( nav.title == "Upload" ?
             <div key={nav.title}className='col-span-1 flex justify-center '>
