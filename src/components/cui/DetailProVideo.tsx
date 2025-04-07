@@ -3,8 +3,8 @@ import React from 'react'
 import DetailedSearchInput from './DetailedSearchInput'
 import Image from 'next/image'
 import { Button } from '../ui/button'
-import { DetailTypeButton } from './TypeButton'
-import { Code, Facebook, MessageCircleMoreIcon, Repeat2, Send } from 'lucide-react'
+import { DetailTypeButton, TypeButton } from './TypeButton'
+import { Code, Facebook, MessageCircleMoreIcon, Repeat2, Send, Share } from 'lucide-react'
 import { CommentTabs } from './CommentTabs'
 import Link from 'next/link'
 import DetailLikeBtn from './DetailLikeBtn'
@@ -17,6 +17,8 @@ import DetailDescription from './DetailDescription'
 import DetailVideoPlayer from './DetailVideoPlayer'
 import DetailFollowBtn from './DetailFollowBtn'
 import BookmarkBtn from './BookmarkBtn'
+import FollowAuthorMini from '../ui/FollowAuthorMini'
+import CLikeBtn from './CLikeBtn'
 
 const DetailProVideo = ({item, userId}:{item:VideoType; userId:string}) => {
 
@@ -39,7 +41,28 @@ const DetailProVideo = ({item, userId}:{item:VideoType; userId:string}) => {
                 
                 <DetailVideoPlayer videoId={item?._id} videoUrl={item?.videoUrl}/>
             </section>
+            <div className=' md:hidden absolute z-40 top-1/2 -translate-y-1/2 md:translate-y-0 right-5 md:right-0 md:relative md:-top-5 flex flex-col gap-4 items-center justify-end'>
+          {/* author follow */}
+            <FollowAuthorMini userId={userId} item={item?.author} />
+
+            {/* like and count */}
+            <CLikeBtn count={item?.likes as number} videoId={item?._id} userId={userId}/>
+
+
+            {/*  comments */}
+              {/* <CVideoModal userId={session?.user?.id as string} item={item} triggerBtn={ 
+              <CommentButton text={commentCount} beforeIcon={<MessageCircleMoreIcon className=' size-6 text-muted-custom-text'/>}/>    
+            }/> */}
             
+
+            {/* bookmark */}
+            <BookmarkBtn userId={userId} video={item}/>
+
+
+            {/* share/repost */}
+            <TypeButton isDone={true} afterIcon={<Share className=' size-6 text-primary-custom'/>} 
+            beforeIcon={<Share className=' size-6 text-muted-custom-text'/>} text={"51.2K"}/>
+        </div>
          </div>
          <div className=" pt-5 w-0 hidden lg:block md:w-[544px] h-full bg-light-muted">
             <section className=" space-y-3 p-4">

@@ -11,7 +11,7 @@ const DetailVideoPlayer = ({videoUrl, videoId}:{videoUrl:string; videoId:string}
                 logo={false}
                 controls={true}
                 src={videoUrl}
-                onEnded={()=> updateViewCount(videoId)}
+                onEnded={async()=> await updateViewCount(videoId)}
                 transformation={{
                 color: 'white',
                 gravity: "center",
