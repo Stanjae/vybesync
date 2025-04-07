@@ -28,12 +28,12 @@ const page = async({params, searchParams}: {searchParams: Promise<SearchParams>,
   return (
     <section className=' bg-foreground px-6 space-y-8 py-8'>
         <div className=' flex-col md:flex-row flex gap-3 items-center'>
-            <Image alt={response?.name} width={212} height={212} className=' max-w-full h-auto w-[212px] rounded-full' src={imageUrl as string}/>
+            <Image alt={response?.name} width={212} height={212} className=' max-w-full h-auto w-[175px] md:w-[212px] rounded-full' src={imageUrl as string}/>
             <div className=' grow space-y-2.5'>
                 <div className=' flex md:justify-normal justify-center items-center gap-2'>
-                    <h1 className=' text-background text-2xl font-bold'>{response?.fullname}</h1>
+                    <h1 className=' text-background text-xl sm:text-2xl font-bold'>{response?.fullname}</h1>
                     <BadgeCheck className=' text-badge-custom'/>
-                    <h2 className=' text-lg text-background/75'>@{response?.name}</h2>
+                    <h2 className=' hidden sm:block text-lg text-background/75'>@{response?.name}</h2>
                 </div>
 
                 {session?.user?.id == response?._id ? (
