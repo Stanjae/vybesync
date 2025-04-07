@@ -105,7 +105,7 @@ export function UDropzone({session}:{session:Session}) {
               <CLoader/>
             </div>}
 
-            <section className=" mt-20 flex ">
+            <section className=" mt-20 flex flex-col sm:flex-row ">
               {navs.map((item, index)=>(
                 <div key={index} className=" gap-2 flex">
                   {item.icon}
