@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
-import { CldVideoPlayer } from 'next-cloudinary';
 import 'next-cloudinary/dist/cld-video-player.css';
 import FollowAuthorMini from '../ui/FollowAuthorMini';
 import {CommentButton, TypeButton} from './TypeButton';
@@ -12,6 +11,7 @@ import { getVideoCommentsCount, updateViewCount } from '@/lib/actions';
 import CLikeBtn from './CLikeBtn';
 import { Session } from 'next-auth';
 import BookmarkBtn from './BookmarkBtn';
+import CosVideoPlayer from './CosVideoPlayer';
 
 
 function useParallax(value: MotionValue<number>, distance: number) {
@@ -50,7 +50,7 @@ useEffect(()=>{
   return (
     <div id={`video-${id}`} className=' bg-foreground text-background h-screen containt overflow-hidden relative justify-center pt-5 gap-4 block sm:flex'>
       <section ref={ref} id='foryou-id' className=' relative w-full sm:w-[419px]'>
-        <CldVideoPlayer id={item?._id} key={item?._id} videoRef={vidref} className=' border-none outline-none rounded-2xl'
+        <CosVideoPlayer id={item?._id} key={item?._id} videoRef={vidref} className=' border-none outline-none rounded-2xl'
         width="419"
         height="744"
         logo={false}
@@ -81,7 +81,7 @@ useEffect(()=>{
       </section>
         
 
-         <div className=' absolute z-50 -bottom-14 right-5 md:right-0 md:relative md:-top-5 flex flex-col gap-4 items-center justify-end'>
+         <div className=' absolute z-50 bottom-10 right-5 md:right-0 md:relative md:-top-5 flex flex-col gap-4 items-center justify-end'>
           {/* author follow */}
             <FollowAuthorMini userId={session?.user?.id as string} item={item?.author} />
 
