@@ -20,10 +20,21 @@ export const TypeButton = ({beforeIcon, afterIcon, text, isDone, action}:{action
 
 export const CommentButton = ({beforeIcon, text, }:{beforeIcon:React.ReactNode; text:string|number}) => {
   return (
-    <div className=' space-y-1'>
+    <div className=' z-50 space-y-1'>
        <div className=' size-11 flex items-center justify-center rounded-full bg-muted-custom'>
              {beforeIcon}
         </div>
+        <p className=' text-sm font-bold text-center text-background/85'>{text}</p>
+    </div>
+  )
+}
+
+export const CommentButtonMobile = ({beforeIcon, text, }:{beforeIcon:React.ReactNode; text:string|number}) => {
+  return (
+    <div className=' z-50 space-y-1'>
+       <Button className=' size-11 flex items-center justify-center rounded-full bg-muted-custom'>
+             {beforeIcon}
+        </Button>
         <p className=' text-sm font-bold text-center text-background/85'>{text}</p>
     </div>
   )

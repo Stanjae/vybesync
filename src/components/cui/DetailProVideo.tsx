@@ -19,6 +19,7 @@ import DetailFollowBtn from './DetailFollowBtn'
 import BookmarkBtn from './BookmarkBtn'
 import FollowAuthorMini from '../ui/FollowAuthorMini'
 import CLikeBtn from './CLikeBtn'
+import { CommentDrawer } from './mobile/CommentDrawer'
 
 const DetailProVideo = ({item, userId}:{item:VideoType; userId:string}) => {
 
@@ -27,7 +28,19 @@ const DetailProVideo = ({item, userId}:{item:VideoType; userId:string}) => {
     void queryClient.prefetchQuery(query)
 
     const imageUrl = item?.author?.image as string;
-    const ShareUrl = `${process.env.NEXT_PUBLIC_URL}/@${item?.author?.name}/video/${item?._id}`
+    const ShareUrl = `${process.env.NEXT_PUBLIC_URL}/@${item?.author?.name}/video/${item?._id}`;
+
+     /* const [commentCount, setCommentCount] = useState<number>(0);
+
+    
+      useEffect(()=>{
+        const fetchCommentCount =async()=>{
+          const response = await getVideoCommentsCount(item?._id);
+          setCommentCount(response)
+        }
+        if(!item?._id) return
+        fetchCommentCount()
+      },[]) */
 
 
    
@@ -50,9 +63,14 @@ const DetailProVideo = ({item, userId}:{item:VideoType; userId:string}) => {
 
 
             {/*  comments */}
-              {/* <CVideoModal userId={session?.user?.id as string} item={item} triggerBtn={ 
-              <CommentButton text={commentCount} beforeIcon={<MessageCircleMoreIcon className=' size-6 text-muted-custom-text'/>}/>    
-            }/> */}
+            <CommentDrawer videoId={item?._id} triggerBtn={
+                 <div className=' z-30 space-y-1'>
+                       <Button className=' size-11 flex items-center justify-center rounded-full bg-muted-custom'>
+                            <MessageCircleMoreIcon className=' size-6 text-muted-custom-text'/>
+                        </Button>
+                        <p className=' text-sm font-bold text-center text-background/85'>{item?.comment_count}</p>
+                </div>
+            }/>
             
 
             {/* bookmark */}
