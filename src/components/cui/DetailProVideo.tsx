@@ -1,9 +1,10 @@
+'use client';
 import { VideoType } from "@/lib/definitions";
-import React from "react";
+import React, { useState } from "react";
 import DetailedSearchInput from "./DetailedSearchInput";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { DetailTypeButton, TypeButton } from "./TypeButton";
+import { CommentButton, DetailTypeButton, TypeButton } from "./TypeButton";
 import {
   Code,
   Facebook,
@@ -24,6 +25,7 @@ import BookmarkBtn from "./BookmarkBtn";
 import FollowAuthorMini from "../ui/FollowAuthorMini";
 import CLikeBtn from "./CLikeBtn";
 import { CommentDrawer } from "./mobile/CommentDrawer";
+import { CDrawer } from "./CDrawer";
 
 const DetailProVideo = ({
   item,
@@ -33,9 +35,14 @@ const DetailProVideo = ({
   userId: string;
 }) => {
 
-
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const imageUrl = item?.author?.image as string;
   const ShareUrl = `${process.env.NEXT_PUBLIC_URL}/@${item?.author?.name}/video/${item?._id}`;
+
+    const openCommentsDrawer = () => {
+        setMobileDrawerOpen(true);
+     
+    };
 
   return (
     <main className=" flex flex-row bg-foreground rounded-none hunt overflow-hidden">
@@ -59,19 +66,11 @@ const DetailProVideo = ({
           />
 
           {/*  comments */}
-          <CommentDrawer
-            videoId={item?._id}
-            triggerBtn={
-              <div className=" z-30 space-y-1">
-                <Button className=" size-11 flex items-center justify-center rounded-full bg-muted-custom">
-                  <MessageCircleMoreIcon className=" size-6 text-muted-custom-text" />
-                </Button>
-                <p className=" text-sm font-bold text-center text-background/85">
-                  {item?.comment_count}
-                </p>
-              </div>
-            }
-          />
+         <CommentButton
+                 count={item?.comment_count || 0}
+                 beforeIcon={MessageCircleMoreIcon}
+                 action={openCommentsDrawer}
+               />
 
           {/* bookmark */}
           <BookmarkBtn userId={userId} video={item} />
@@ -187,6 +186,11 @@ const DetailProVideo = ({
 
         <CommentTabs userId={userId} videoId={item?._id} />
       </div>
+
+            {/* mobile */}
+            <CDrawer opened={mobileDrawerOpen}  closeDrawer={() => setMobileDrawerOpen(false)} title="Comments">
+              <CommentDrawer videoId={item?._id} />
+            </CDrawer>
     </main>
   );
 };
