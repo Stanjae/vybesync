@@ -3,8 +3,6 @@
 @plugin "tailwindcss-animate";
 
 
-
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -132,6 +130,10 @@
 
 #foryou-id .vjs-play-control,  #detail .vjs-play-control, #profile .vjs-play-control, #videomodal .vjs-play-control, #searchvideo .vjs-play-control{
  display: none !important;
+};
+
+#foryou-id  .vjs-big-play-button{
+  display: none !important;
 }
 
 #foryou-id .vjs-volume-panel{
@@ -206,7 +208,7 @@ html {
   border-radius: 0;
 }
 
-.scrollarea-custom{
+.scrollarea-custom-p{
   height: calc(100% - 48%) !important;
 
 }

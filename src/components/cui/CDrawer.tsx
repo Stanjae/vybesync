@@ -1,137 +1,45 @@
 "use client"
-
 import * as React from "react"
-import { Minus, Plus } from "lucide-react"
-//import { Bar, BarChart, ResponsiveContainer } from "recharts"
-
-import { Button } from "@/components/ui/button"
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer"
+import { Button } from "../ui/button"
+import { XIcon } from "lucide-react"
 
-export const data1 = [
-  {
-    goal: 400,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 239,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 349,
-  },
-]
+type Props = {
+  opened: boolean;
+  direction?: "left" | "right" | "top" | "bottom";
+  closeDrawer: () => void;
+  title: string;
+  children: React.ReactNode;
+}
 
-export function CDrawer() {
-  const [goal, setGoal] = React.useState(350)
-
-  function onClick(adjustment: number) {
-    setGoal(Math.max(200, Math.min(400, goal + adjustment)))
-  }
+export function CDrawer({opened, closeDrawer, title, children, direction = 'bottom'}:Props) {
 
   return (
-    <Drawer direction="right" >
-      <DrawerTrigger asChild>
-        <span >Open Drawer</span>
-      </DrawerTrigger>
-      <DrawerContent  className=" w-screen h-dvh">
+    <Drawer open={opened} direction={direction}>
+      <DrawerContent className=" w-full h-dvh bg-foreground">
         <div className="mx-auto w-full ">
-          <DrawerHeader>
-            <DrawerTitle>Move Goal</DrawerTitle>
-            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+          <DrawerHeader className=" flex flex-row justify-between items-center ">
+            <DrawerTitle className="text-white">{title}</DrawerTitle>
+            <Button
+              size={"icon"}
+              variant="outline"
+              className=" bg-background/15 hover:bg-foreground text-background hover:text-background"
+              onClick={closeDrawer}
+            >
+              <XIcon />
+            </Button>
           </DrawerHeader>
-          <div className="p-4 pb-0">
-            <div className="flex items-center justify-center space-x-2">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 shrink-0 rounded-full"
-                onClick={() => onClick(-10)}
-                disabled={goal <= 200}
-              >
-                <Minus />
-                <span className="sr-only">Decrease</span>
-              </Button>
-              <div className="flex-1 text-center">
-                <div className="text-7xl font-bold tracking-tighter">
-                  {goal}
-                </div>
-                <div className="text-[0.70rem] uppercase text-muted-foreground">
-                  Calories/day
-                </div>
-              </div>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 shrink-0 rounded-full"
-                onClick={() => onClick(10)}
-                disabled={goal >= 400}
-              >
-                <Plus />
-                <span className="sr-only">Increase</span>
-              </Button>
-            </div>
-            <div className="mt-3 h-[120px]">
-             {/*  <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data}>
-                  <Bar
-                    dataKey="goal"
-                    style={
-                      {
-                        fill: "hsl(var(--foreground))",
-                        opacity: 0.9,
-                      } as React.CSSProperties
-                    }
-                  />
-                </BarChart>
-              </ResponsiveContainer> */}
-            </div>
-          </div>
-          <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
+          <section className=" pb-0">
+            {children}
+          </section>
         </div>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
 

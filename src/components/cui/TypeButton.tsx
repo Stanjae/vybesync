@@ -2,6 +2,7 @@
 import React from 'react'
 import { Button } from '../ui/button'
 import millify from 'millify';
+import { LucideProps } from 'lucide-react';
 
 export const TypeButton = ({beforeIcon, afterIcon, text, isDone, action}:{action?:()=> void; beforeIcon:React.ReactNode; isDone:boolean; afterIcon?:React.ReactNode; text:string|number}) => {
   const handleAction =()=>{
@@ -18,16 +19,35 @@ export const TypeButton = ({beforeIcon, afterIcon, text, isDone, action}:{action
 }
 
 
-export const CommentButton = ({beforeIcon, text, }:{beforeIcon:React.ReactNode; text:string|number}) => {
+export const CommentButton = ({
+  beforeIcon: Icon,
+  count,
+  action,
+}: {
+  beforeIcon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+  >;
+  count: number;
+  action?: () => void;
+}) => {
   return (
-    <div className=' z-50 space-y-1'>
-       <div className=' size-11 flex items-center justify-center rounded-full bg-muted-custom'>
-             {beforeIcon}
-        </div>
-        <p className=' text-sm font-bold text-center text-background/85'>{text}</p>
+    <div className=" z-50 space-y-1">
+      <Button
+        onClick={(e) => {
+          e.stopPropagation();
+         if(action) action();
+        }
+        }
+        className=" size-11 flex items-center justify-center rounded-full bg-muted-custom"
+      >
+        <Icon className=" size-6 text-muted-custom-text" />
+      </Button>
+      <p className=" text-sm font-bold text-center text-background/85">
+        {millify(count)}
+      </p>
     </div>
-  )
-}
+  );
+};
 
 export const CommentButtonMobile = ({beforeIcon, text, }:{beforeIcon:React.ReactNode; text:string|number}) => {
   return (
