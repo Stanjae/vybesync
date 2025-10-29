@@ -44,7 +44,6 @@ const VybeSyncDrawer = ({
             <XIcon />
           </Button>
         </SheetHeader>
-
         <div>{children}</div>
       </SheetContent>
     </Sheet>

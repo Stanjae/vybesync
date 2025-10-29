@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { VideoType } from "@/lib/definitions";
 import React, { useState } from "react";
 import DetailedSearchInput from "./DetailedSearchInput";
@@ -25,7 +25,7 @@ import BookmarkBtn from "./BookmarkBtn";
 import FollowAuthorMini from "../ui/FollowAuthorMini";
 import CLikeBtn from "./CLikeBtn";
 import { CommentDrawer } from "./mobile/CommentDrawer";
-import { CDrawer } from "./CDrawer";
+import { CDrawer } from "./Drawers/CDrawer";
 
 const DetailProVideo = ({
   item,
@@ -34,15 +34,13 @@ const DetailProVideo = ({
   item: VideoType;
   userId: string;
 }) => {
-
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const imageUrl = item?.author?.image as string;
   const ShareUrl = `${process.env.NEXT_PUBLIC_URL}/@${item?.author?.name}/video/${item?._id}`;
 
-    const openCommentsDrawer = () => {
-        setMobileDrawerOpen(true);
-     
-    };
+  const openCommentsDrawer = () => {
+    setMobileDrawerOpen(true);
+  };
 
   return (
     <main className=" flex flex-row bg-foreground rounded-none hunt overflow-hidden">
@@ -66,11 +64,11 @@ const DetailProVideo = ({
           />
 
           {/*  comments */}
-         <CommentButton
-                 count={item?.comment_count || 0}
-                 beforeIcon={MessageCircleMoreIcon}
-                 action={openCommentsDrawer}
-               />
+          <CommentButton
+            count={item?.comment_count || 0}
+            beforeIcon={MessageCircleMoreIcon}
+            action={openCommentsDrawer}
+          />
 
           {/* bookmark */}
           <BookmarkBtn userId={userId} video={item} />
@@ -187,10 +185,14 @@ const DetailProVideo = ({
         <CommentTabs userId={userId} videoId={item?._id} />
       </div>
 
-            {/* mobile */}
-            <CDrawer opened={mobileDrawerOpen}  closeDrawer={() => setMobileDrawerOpen(false)} title="Comments">
-              <CommentDrawer videoId={item?._id} />
-            </CDrawer>
+      {/* mobile */}
+      <CDrawer
+        opened={mobileDrawerOpen}
+        closeDrawer={() => setMobileDrawerOpen(false)}
+        title="Comments"
+      >
+        <CommentDrawer videoId={item?._id} />
+      </CDrawer>
     </main>
   );
 };

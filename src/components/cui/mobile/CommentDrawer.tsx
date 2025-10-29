@@ -7,6 +7,7 @@ import CommentInput from "../CommentInput";
 import { useGetVideoComments } from "@/hooks/useGetVIdeoComments";
 import useHandleComments from "@/hooks/useHandleComments";
 import { VybeSyncLoader } from "../Loaders/VybeSyncLoader";
+import Link from "next/link";
 
 export function CommentDrawer({ videoId }: { videoId: string }) {
   const { isSuccess, data, isLoading } = useGetVideoComments(videoId);
@@ -28,9 +29,8 @@ export function CommentDrawer({ videoId }: { videoId: string }) {
   };
 
   return (
-    <section>
-      <div className="pb-0">
-        <section className=" overflow-y-auto h-72 space-y-2 px-3">
+    <main className=" flex flex-col h-full">
+        <section className=" h-[calc(100vh-475px)] overflow-y-auto  space-y-2 px-3 pb-2">
           {isLoading && (
             <div className="h-72 flex justify-center items-center">
               <VybeSyncLoader />
@@ -46,14 +46,22 @@ export function CommentDrawer({ videoId }: { videoId: string }) {
               />
             ))}
         </section>
-      </div>
       <div className=" border-t border-t-muted-custom py-3 px-5">
+        {session?.id ?(
         <CommentInput
           isPending={isPending}
           addComment={addComment}
           placeholder="Add Comment.."
-        />
+        />):(
+            <p className="text-sm text-center text-muted-custom-text">
+              Please{" "}
+              <Link className="!text-primary-custom" href={"/auth/sign-in"}>
+                sign in
+              </Link>{" "}
+              to add a comment.
+            </p>
+          )}
       </div>
-    </section>
+    </main>
   );
 }

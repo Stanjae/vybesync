@@ -21,7 +21,7 @@ import useGetVideoCommentCount from "@/hooks/useGetVideoCommentCount";
 import VideoProfileCommentCard from "./cards/VideoProfileCommentCard";
 import VybeSyncDrawer from "./Drawers/VybeSyncDrawer";
 import { useScreenDetector } from "@/hooks/useScreenDetector";
-import { CDrawer } from "./CDrawer";
+import { CDrawer } from "./Drawers/CDrawer";
 import { CommentDrawer } from "./mobile/CommentDrawer";
 
 const CVideoCard = ({
@@ -37,7 +37,7 @@ const CVideoCard = ({
 }) => {
   const vidref = useRef<HTMLVideoElement | null>(null);
 
-  const { isMobile } = useScreenDetector();
+  const { isMobile, height } = useScreenDetector();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [show, setShow] = useState(false);
@@ -113,7 +113,7 @@ const CVideoCard = ({
           videoRef={vidref}
           className=" border-none outline-none rounded-2xl"
           width="419"
-          height="744"
+          height={height}
           logo={false}
           loop={true}
           controls={true}
@@ -203,7 +203,11 @@ const CVideoCard = ({
       </VybeSyncDrawer>
 
       {/* mobile */}
-      <CDrawer opened={mobileDrawerOpen}  closeDrawer={() => setMobileDrawerOpen(false)} title="Comments">
+      <CDrawer
+        opened={mobileDrawerOpen}
+        closeDrawer={() => setMobileDrawerOpen(false)}
+        title="Comments"
+      >
         <CommentDrawer videoId={item?._id} />
       </CDrawer>
     </div>

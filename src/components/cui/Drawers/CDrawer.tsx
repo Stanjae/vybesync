@@ -1,13 +1,13 @@
-"use client"
-import * as React from "react"
+"use client";
+import * as React from "react";
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-} from "@/components/ui/drawer"
-import { Button } from "../ui/button"
-import { XIcon } from "lucide-react"
+} from "@/components/ui/drawer";
+import { Button } from "../../ui/button";
+import { XIcon } from "lucide-react";
 
 type Props = {
   opened: boolean;
@@ -15,13 +15,18 @@ type Props = {
   closeDrawer: () => void;
   title: string;
   children: React.ReactNode;
-}
+};
 
-export function CDrawer({opened, closeDrawer, title, children, direction = 'bottom'}:Props) {
-
+export function CDrawer({
+  opened,
+  closeDrawer,
+  title,
+  children,
+  direction = "bottom",
+}: Props) {
   return (
     <Drawer open={opened} direction={direction}>
-      <DrawerContent className=" w-full h-dvh bg-foreground">
+      <DrawerContent className=" w-full h-[calc(100dvh-35%)] bg-foreground">
         <div className="mx-auto w-full ">
           <DrawerHeader className=" flex flex-row justify-between items-center ">
             <DrawerTitle className="text-white">{title}</DrawerTitle>
@@ -34,12 +39,9 @@ export function CDrawer({opened, closeDrawer, title, children, direction = 'bott
               <XIcon />
             </Button>
           </DrawerHeader>
-          <section className=" pb-0">
-            {children}
-          </section>
+          <section className=" pb-0">{children}</section>
         </div>
       </DrawerContent>
     </Drawer>
   );
 }
-
