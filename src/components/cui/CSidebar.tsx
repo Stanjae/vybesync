@@ -56,12 +56,14 @@ const CSidebar = ({ session }: { session: TSessionType | null }) => {
 
   useEffect(() => {
     if (session?.user) {
-      setSession(session?.user);
+      setSession(session.user);
       fetchBookmarked(session?.user?.id as string);
     } else {
       deleteSession();
     }
-  }, [session?.user]);
+  }, [session?.user?.id]);
+
+  const linkBasedRoutes = ["/following", "/friends", "/upload", "/activity"];
 
   useEffect(() => {
     if (!session?.user) return;
@@ -191,7 +193,7 @@ const CSidebar = ({ session }: { session: TSessionType | null }) => {
 
         <ul className=" space-y-3">
           {navigation.map((item, index) =>
-            item.href == "/upload" || item.href == "/activity" ? (
+            linkBasedRoutes.includes(item.href) ? (
               <Link href={`${item.href}`} className=" block" key={index}>
                 <Button
                   onClick={() => setActive(item.title)}

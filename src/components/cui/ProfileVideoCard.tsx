@@ -85,7 +85,7 @@ const ProfileVideoCard = ({
             height={25}
           />
           <h3 className="text-lg font-medium text-background">
-            {item?.author?.fullname}
+            {item?.author?.name}
           </h3>
         </Link>
       )}

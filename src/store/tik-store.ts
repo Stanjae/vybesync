@@ -4,11 +4,14 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 import { createStore } from 'zustand/vanilla';
 
 export type SessionType = {
-  email?:string | null | undefined;
-  id?:string | null | undefined;
-  image?:string | null | undefined;
-  name?:string | null | undefined;
-}
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  emailVerified: boolean;
+  name: string;
+  image?: string | null | undefined;
+};
 
 export type CounterState = {
   session: SessionType | null;

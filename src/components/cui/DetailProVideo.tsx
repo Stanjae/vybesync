@@ -36,7 +36,7 @@ const DetailProVideo = ({
 }) => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const imageUrl = item?.author?.image as string;
-  const ShareUrl = `${process.env.NEXT_PUBLIC_URL}/@${item?.author?.name}/video/${item?._id}`;
+  const ShareUrl = `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/@${item?.author?.name}/video/${item?._id}`;
 
   const openCommentsDrawer = () => {
     setMobileDrawerOpen(true);
