@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import { AuthorReferenceType } from '@/lib/definitions'
+import { AuthorReferenceType } from '@/types/definitions.types'
 import FollowMiniBtn from '../cui/FollowMiniBtn'
 
 const FollowAuthorMini = ({item, userId}:{userId:string; item:AuthorReferenceType}) => {
