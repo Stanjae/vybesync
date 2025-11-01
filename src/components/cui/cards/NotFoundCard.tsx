@@ -60,7 +60,7 @@ export default function NotFoundCard() {
 
           <button
             onClick={() => window.history.back()}
-            className="px-8 py-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center gap-2"
+            className="px-8 py-4 bg-primary-custom text-white font-semibold rounded-lg hover:bg-primary-custom/80 transition-colors duration-200 flex items-center justify-center gap-2"
           >
             <svg
               className="w-5 h-5"
