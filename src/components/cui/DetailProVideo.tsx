@@ -1,5 +1,5 @@
 "use client";
-import { VideoType } from "@/lib/definitions";
+import { VideoType } from "@/types/definitions.types";
 import React, { useState } from "react";
 import DetailedSearchInput from "./DetailedSearchInput";
 import Image from "next/image";

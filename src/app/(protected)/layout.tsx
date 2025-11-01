@@ -1,14 +1,16 @@
 import React from "react";
 import USideBar from "@/components/cui/USideBar";
-import { auth } from "@/auth";
 import Image from "next/image";
 import UploadNav from "@/components/cui/mobile/UploadNav";
+import { getAuthSession } from "@/lib/actions";
+import { redirect } from "next/navigation";
 export default async function PrivatePagesLayout({
     children,
   }: Readonly<{
     children: React.ReactNode;
   }>) {
-    const session = await auth()
+  const session = await getAuthSession();
+  if(!session)  redirect('/auth/sign-in')
     return (
       <main className=" bg-[#F8F8F8] text-foreground h-dvh">
         <section className=" h-full flex">

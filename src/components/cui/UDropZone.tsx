@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
-import { VideoResponse } from "@/lib/definitions";
+import { VideoResponse } from "@/types/definitions.types";
 import axios from "axios";
 import { Button } from "../ui/button";
 import {
@@ -14,7 +14,7 @@ import {
 import { toast } from "sonner";
 import CLoader from "./Loaders/CLoader";
 import UploadForm from "./UploadForm";
-import { Session } from "next-auth";
+import { TSessionType } from "@/types/auth.types";
 
 export const navs = [
   {
@@ -39,7 +39,7 @@ export const navs = [
   },
 ];
 
-export function UDropzone({ session }: { session: Session }) {
+export function UDropzone({ session }: { session: TSessionType | null }) {
   const [videoURL, setVideoURL] = useState<VideoResponse | null>();
 
   const [progress, setProgress] = useState<boolean>();

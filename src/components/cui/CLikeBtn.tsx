@@ -1,46 +1,67 @@
-'use client'
-import { Heart } from 'lucide-react';
-import React, { useEffect } from 'react'
-import { Button } from '../ui/button';
-import millify from 'millify';
-import { useCounterStore } from '@/providers/zustand-store';
-import { Skeleton } from '../ui/skeleton';
-import { toast } from 'sonner';
+"use client";
+import { Heart } from "lucide-react";
+import { Button } from "../ui/button";
+import millify from "millify";
+import { Skeleton } from "../ui/skeleton";
+import { useEffect, useState } from "react";
+import useHandleLikes from "@/hooks/useHandleLikes";
 
-const CLikeBtn = ({videoId, userId, count}:{videoId:string; userId:string; count:number}) => {
-  const { likedVideos, likeCounts, setLikesCount, toggleLike} = useCounterStore(
-      (state) => state,
-    )
-  
-  
+const CLikeBtn = ({
+  videoId,
+  userId,
+  count,
+}: {
+  videoId: string;
+  userId: string;
+  count: number;
+}) => {
+  const { handleLike, isLiked } = useHandleLikes(userId, videoId);
+  const [likeCount, setLikeCount] = useState<number>(count);
+  const [status, setStatus] = useState<boolean>();
 
-  useEffect(()=>{
-    setLikesCount(videoId, count, userId);
-  },[userId]);
+  useEffect(() => {
+    setStatus(isLiked.data);
+  }, [isLiked.data]);
 
-  const isLiked = userId ? likedVideos.includes(videoId) : null;
-
-
-  const handleAction =()=>{
-    if(!userId) {
-      toast.warning("You must be logged in!")
-      return
+  const handleLikeAction = async () => {
+    try {
+      if (status) {
+        setStatus(false);
+        setLikeCount(likeCount - 1);
+      } else {
+        setStatus(true);
+        setLikeCount(likeCount + 1);
+      }
+      await handleLike.mutateAsync({ videoId, userId });
+    } catch (err) {
+      setLikeCount(count);
+      setStatus(isLiked.data);
+      console.log('yuri:',err);
     }
-    toggleLike(videoId, userId);
   };
 
-  
-
-
-  const noOfLikes = likeCounts[videoId] ||0;
   return (
-    <div className=' space-y-1'>
-        <Button onClick={handleAction} className=' rounded-full p-5 bg-muted-custom' size={'icon'}>
-            {isLiked ? <Heart className=' size-6 text-primary-custom'/> : <Heart className=' size-6 text-muted-custom-text'/>}
-        </Button>
-        <div className=' text-sm font-bold text-center text-background/85'>{typeof(noOfLikes) == 'number' ? millify(noOfLikes as number || 0) : <Skeleton className=' bg-muted-custom  w-[40px] h-5'/>}</div>
+    <div className=" space-y-1">
+      <Button
+        onClick={handleLikeAction}
+        className=" rounded-full p-5 bg-muted-custom "
+        size={"icon"}
+      >
+        {status ? (
+          <Heart fill="#ea284e" className=" size-6 text-primary-custom" />
+        ) : (
+          <Heart className=" size-6 text-muted-custom-text" />
+        )}
+      </Button>
+      <div className=" text-sm font-bold text-center text-background/85">
+        {isLiked.isLoading ? (
+          <Skeleton className=" bg-muted-custom  w-[40px] h-5" />
+        ) : (
+          millify((likeCount as number) || 0)
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default CLikeBtn
+export default CLikeBtn;

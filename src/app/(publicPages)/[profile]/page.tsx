@@ -1,13 +1,11 @@
-import { auth } from "@/auth";
 import CLoader from "@/components/cui/Loaders/CLoader";
 import FollowBtn from "@/components/cui/FollowBtn";
 import ProfileFollowCount from "@/components/cui/ProfileFollowCount";
 import ProfileTabsLayout from "@/components/cui/ProfileTabsLayout";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getProfile } from "@/lib/actions";
-import { ProfileType, SearchParams } from "@/lib/definitions";
-import { urlFor } from "@/sanity/client";
+import { getAuthSession, getProfile } from "@/lib/actions";
+import { ProfileType, SearchParams } from "@/types/definitions.types";
 import { BadgeCheck, MoreHorizontal, Settings, Share } from "lucide-react";
 import Image from "next/image";
 import React, { Suspense } from "react";
@@ -23,12 +21,10 @@ const page = async ({
   const searchP = await searchParams;
   const newSort = searchP?.sort;
 
-  const session = await auth();
+  const session = await getAuthSession();
   const response: ProfileType = await getProfile(profile.replace("%40", ""));
 
   const imageUrl = response?.image
-    ? response?.image
-    : urlFor(response?.profile_image)?.url();
   return (
     <section className=" bg-foreground px-6 space-y-8 py-8">
       <div className=" flex-col md:flex-row flex gap-3 items-center">

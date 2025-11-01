@@ -2,8 +2,8 @@ import { CategoryCarousel } from "@/components/cui/CategoryCarousel";
 import CLoader from "@/components/cui/Loaders/CLoader";
 import ExploreLayout from "@/components/cui/ExploreLayout";
 import { getExploreVideos } from "@/lib/actions";
-import { SearchParams } from "@/lib/definitions";
 import React, { Suspense } from "react";
+import { SearchParams } from "@/types/definitions.types";
 
 const page = async ({
   searchParams,

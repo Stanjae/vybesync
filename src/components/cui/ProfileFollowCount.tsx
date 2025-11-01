@@ -1,5 +1,5 @@
 import { getProfileFollowArray } from '@/lib/actions'
-import { ProfileFollowResponseType } from '@/lib/definitions'
+import { ProfileFollowResponseType } from '@/types/definitions.types'
 import millify from 'millify'
 import React from 'react'
 

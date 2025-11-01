@@ -7,11 +7,6 @@ import Link from 'next/link'
 
 const navigation = [
     { title: 'Home', href: '/',  icon:<Home className=' size-5'/> },
-   /*  { title: 'Explore', href: '/explore', icon:<Compass className=' size-7'/>  },
-    { title: 'Following', href: '/following', icon:<UserRoundCheck className=' size-7'/> },
-    {title:"Friends", href: '/friends', icon:<Users className=' size-7'/> },
-    {title:"Upload", href: '/upload', icon:<SquarePlus className=' size-7'/>},
-    {title:"Activity", href: '/activity', icon:<MessageSquareText className=' size-7'/>} */
 ]
 
 

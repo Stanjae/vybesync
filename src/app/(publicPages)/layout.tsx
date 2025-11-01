@@ -1,7 +1,7 @@
 import CSidebar from "@/components/cui/CSidebar";
 import React from "react";
-import { auth } from "@/auth";
 import MobileNav from "@/components/cui/mobile/MobileNav";
+import { getAuthSession } from "@/lib/actions";
 //import NotificationWrapper from "@/components/cui/NotificationWrapper";
 export default async function PublicPagesLayout({
     children,
@@ -9,7 +9,7 @@ export default async function PublicPagesLayout({
     children: React.ReactNode;
   }>) {
 
-    const session = await auth();
+    const session = await getAuthSession();
     return (
       <main className=" bg-foreground text-background h-dvh">
         <section className=" bg-foreground text-background h-full flex">

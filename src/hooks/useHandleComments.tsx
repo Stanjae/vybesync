@@ -1,12 +1,11 @@
 "use client";
 import { addVideoComments } from "@/lib/actions";
 import { Query_keys } from "@/lib/constants/services";
-import { addCommentType } from "@/lib/definitions";
-import { getQueryClient } from "@/react-query-config/get-query-client";
-import { useMutation } from "@tanstack/react-query";
+import { addCommentType } from "@/types/definitions.types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useHandleComments = () => {
-  const queryClient = getQueryClient();
+  const queryClient =  useQueryClient()
 
   const addComment = useMutation({
     mutationFn: async (payload: addCommentType) =>

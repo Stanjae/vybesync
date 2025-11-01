@@ -10,11 +10,9 @@ import {
   Play,
   Share,
 } from "lucide-react";
-import { VideoType } from "@/lib/definitions";
 import { motion } from "motion/react";
 import { updateViewCount } from "@/lib/actions";
 import CLikeBtn from "./CLikeBtn";
-import type { Session } from "next-auth";
 import BookmarkBtn from "./BookmarkBtn";
 import CosVideoPlayer from "./CosVideoPlayer";
 import useGetVideoCommentCount from "@/hooks/useGetVideoCommentCount";
@@ -23,6 +21,8 @@ import VybeSyncDrawer from "./Drawers/VybeSyncDrawer";
 import { useScreenDetector } from "@/hooks/useScreenDetector";
 import { CDrawer } from "./Drawers/CDrawer";
 import { CommentDrawer } from "./mobile/CommentDrawer";
+import { VideoType } from "@/types/definitions.types";
+import { TSessionType } from "@/types/auth.types";
 
 const CVideoCard = ({
   item,
@@ -30,7 +30,7 @@ const CVideoCard = ({
   id,
   session,
 }: {
-  session: Session | null;
+  session: TSessionType | null;
   id?: number;
   item: VideoType;
   videoId: string;
@@ -90,6 +90,8 @@ const CVideoCard = ({
         className="z-10 px-2 md:px-0 relative w-full sm:w-[419px]"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
+        onTouchStart={() => setIsHovering(true)}
+        onTouchEnd={() => setIsHovering(false)}
         onClick={handleVideoClick}
       >
         <button

@@ -1,47 +1,32 @@
 'use client'
-import { fetchNotifications, markNotificationsRead } from '@/lib/actions'
-import { NotificationAll } from '@/lib/definitions'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { Session } from 'next-auth'
 import React, { useState } from 'react';
 import Image from 'next/image'
 import { Button } from '../ui/button'
 import { BellRing, CheckCheck, Loader2 } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import Link from 'next/link'
-import { getQueryClient } from '@/react-query-config/get-query-client'
 import dayjs from 'dayjs'
 import relativeTime from "dayjs/plugin/relativeTime"
 import { Skeleton } from '../ui/skeleton'
+import { TSessionType } from '@/types/auth.types'
+import useGetUserNotifications from '@/hooks/useGetNotifications';
+import useHandleNotifications from '@/hooks/useHandleNotifications';
 
 dayjs.extend(relativeTime)
 
 
-const ActivityLayout = ({session}:{session:Session | null}) => {
-    const queryClient = getQueryClient()
-    const {data, isSuccess, isPending:Pending} = useQuery({queryKey:['notifications'], 
-      queryFn:async(): Promise<NotificationAll[]>=> await fetchNotifications(session?.user?.id as string)});
+const ActivityLayout = ({session}:{session:TSessionType | null}) => {
+    const {data, isSuccess, isPending:Pending} = useGetUserNotifications(session?.user?.id as string);
     
-    const {mutateAsync, isPending, variables} = useMutation({ mutationKey: ['notifications'],
-      mutationFn: async(id:string)=>{
-           const response = await markNotificationsRead(id);
-           return response;
-      },
-      onMutate:()=>{
-      },
-      onSettled: () => {
-        // Replace optimistic todo in the todos list with the result
-        queryClient.invalidateQueries({ queryKey: ['notifications'] })
-      }
-      });
+    const {markAsRead} = useHandleNotifications();
   
     const [tabs, setTabs] = useState("all");
 
     const unread = data?.filter((aura)=> aura?.read == false);
     const read = data?.filter((aura)=> aura?.read)
 
-    const markAsRead = async(id:string)=>{
-      await mutateAsync(id)
+    const markAsReadAction = async(id:string)=>{
+      await markAsRead.mutateAsync(id)
     }
   return (
     <Tabs value={tabs} onValueChange={(e)=> {setTabs(e)}} className="h-full relative ">
@@ -73,8 +58,8 @@ const ActivityLayout = ({session}:{session:Session | null}) => {
                     "Commented on your Post 💬": "Liked your Post 💖"}</span></p>
                 </div>
             </div>
-            <Button onClick={()=> markAsRead(notif?._id)} disabled={notif?.read} className='ml-auto' size={'sm'}>
-              {notif.read ? <CheckCheck/> : isPending && notif?._id == variables ? <Loader2 className="animate-spin" /> : "Mark as Read"}</Button>
+            <Button onClick={()=> markAsReadAction(notif?._id)} disabled={notif?.read} className='ml-auto' size={'sm'}>
+              {notif.read ? <CheckCheck/> : markAsRead.isPending && notif?._id == markAsRead.variables ? <Loader2 className="animate-spin" /> : "Mark as Read"}</Button>
           </li>
         ))}
       </ul>
@@ -100,7 +85,7 @@ const ActivityLayout = ({session}:{session:Session | null}) => {
                   "Commented on your Post 💬": "Liked your Post 💖"}</span></p>
               </div>
           </div>
-          <Button onClick={()=> markAsRead(notif?._id)} disabled={notif?.read} className='ml-auto' size={'sm'}>{notif.read ? <CheckCheck/> : "Mark as Read"}</Button>
+          <Button onClick={()=> markAsReadAction(notif?._id)} disabled={notif?.read} className='ml-auto' size={'sm'}>{notif.read ? <CheckCheck/> : "Mark as Read"}</Button>
         </li>
         ))}
       </ul>
@@ -126,7 +111,7 @@ const ActivityLayout = ({session}:{session:Session | null}) => {
                   "Commented on your Post 💬": "Liked your Post 💖"}</span></p>
               </div>
           </div>
-          <Button onClick={()=> markAsRead(notif?._id)} disabled={notif?.read} className='ml-auto' size={'sm'}>{notif.read ? <CheckCheck/> : "Mark as Read"}</Button>
+          <Button onClick={()=> markAsReadAction(notif?._id)} disabled={notif?.read} className='ml-auto' size={'sm'}>{notif.read ? <CheckCheck/> : "Mark as Read"}</Button>
         </li>
         ))}
       </ul>

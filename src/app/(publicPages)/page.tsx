@@ -1,40 +1,15 @@
-import { auth, signOut } from "@/auth";
-import CAvatar from "@/components/cui/CAvatar";
-import CDropDown from "@/components/cui/CDropDown";
+import ProfileAvatar from "@/components/cui/avatars/ProfileAvatar";
 import VideoLayout from "@/components/cui/VideoLayout";
-import { Button } from "@/components/ui/button";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { getAuthSession } from "@/lib/actions";
 import Link from "next/link";
 import React, { Suspense } from "react";
 
 const page = async () => {
-  const session = await auth();
+  const session = await getAuthSession();
   return (
-    <section
-      className="relative bg-foreground text-background h-screen"
-    >
-      {session?.user ? (
-        <CDropDown
-          contentStyle="bg-foreground/80 border-muted-custom w-[200px]"
-          className=" hidden md:block fixed z-30 right-10 top-[30px]"
-          trigger={<CAvatar session={session} />}
-        >
-          <div>
-            <DropdownMenuItem className=" leading-6 text-lg py-2 font-medium text-background px-3.5">
-              Profile
-            </DropdownMenuItem>
-            <form
-              action={async () => {
-                "use server";
-                await signOut();
-              }}
-            >
-              <Button className="w-full hover:bg-muted-custom hover:text-primary-custom/75 flex items-center justify-start bg-transparent text-lg py-2 font-medium text-primary-custom px-3.5">
-                LogOut
-              </Button>
-            </form>
-          </div>
-        </CDropDown>
+    <section className="relative bg-foreground text-background h-screen">
+      {session?.user.id ? (
+        <ProfileAvatar session={session} />
       ) : (
         <Link
           href={`/auth/sign-in`}

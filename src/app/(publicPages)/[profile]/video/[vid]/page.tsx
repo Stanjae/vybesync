@@ -1,7 +1,6 @@
-import { auth } from "@/auth";
 import CLoader from "@/components/cui/Loaders/CLoader";
 import DetailProVideo from "@/components/cui/DetailProVideo";
-import { getVideoDetail } from "@/lib/actions";
+import { getAuthSession, getVideoDetail } from "@/lib/actions";
 import React, { Suspense } from "react";
 
 const page = async ({
@@ -9,7 +8,7 @@ const page = async ({
 }: {
   params: Promise<{ vid: string; profile: string }>;
 }) => {
-  const session = await auth();
+  const session = await getAuthSession();
   const newParams = await params;
   const response = await getVideoDetail(newParams?.vid);
 

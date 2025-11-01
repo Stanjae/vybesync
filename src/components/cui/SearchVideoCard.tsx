@@ -1,5 +1,5 @@
 'use client'
-import { VideoType } from '@/lib/definitions'
+import { VideoType } from '@/types/definitions.types'
 import Link from 'next/link'
 import React, { useRef } from 'react'
 import 'next-cloudinary/dist/cld-video-player.css';

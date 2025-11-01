@@ -2,7 +2,7 @@ import OthersSearchedFor from '@/components/cui/OthersSearchedFor'
 import SearchLayout from '@/components/cui/SearchLayout'
 import { Skeleton } from '@/components/ui/skeleton'
 import { searchQueries } from '@/lib/actions'
-import { SearchParams } from '@/lib/definitions'
+import { SearchParams } from '@/types/definitions.types'
 import React, { Suspense } from 'react'
 
 const page = async({searchParams}:{searchParams:Promise<SearchParams>}) => {

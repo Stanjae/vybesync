@@ -4,11 +4,11 @@ import CVideoCard from "./CVideoCard";
 import { useScroll, useMotionValueEvent } from "motion/react";
 import { Button } from "../ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { Session } from "next-auth";
 import useGetHomeVids from "@/hooks/useGetHomeVids";
 import CLoader from "./Loaders/CLoader";
+import { TSessionType } from "@/types/auth.types";
 
-const VideoLayout = ({ session }: { session: Session | null }) => {
+const VideoLayout = ({ session }: { session: TSessionType | null }) => {
   const { data: response, isLoading } = useGetHomeVids();
 
   const [videoId, setVideoId] = useState<string>("");
@@ -21,7 +21,7 @@ const VideoLayout = ({ session }: { session: Session | null }) => {
 
   useEffect(() => {
     if (!response || response.length === 0) return;
-    setVideoId(response ? response[0]?._id : "");
+    setVideoId(response[0]?._id);
   }, [response]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {

@@ -3,7 +3,7 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { useCounterStore } from '@/providers/zustand-store';
 import { toast } from 'sonner';
-import { VideoType } from '@/lib/definitions';
+import { VideoType } from '@/types/definitions.types';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 
 const BookmarkBtn = ({userId, video}:{userId:string;video:VideoType}) => {

@@ -1,9 +1,23 @@
 "use server";
 import { client } from "@/sanity/client";
-import { revalidateTag } from "next/cache";
-import { addCommentType, CommentType, CreateVideoType, replyType, VideoType } from "./definitions";
+import { revalidatePath, revalidateTag } from "next/cache";
+import {
+  addCommentType,
+  CommentType,
+  CreateVideoType,
+  replyType,
+  VideoType,
+} from "../types/definitions.types";
 import { nanoid } from "nanoid";
 import { pusher } from "./pusher";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+
+export const getAuthSession = async () => {
+  return await auth.api.getSession({
+    headers: await headers(),
+  });
+};
 
 //----------------------------------------------------NOTIFICATION SYSTEM --------------------------------
 
@@ -113,7 +127,7 @@ export const getExploreVideos = async (text?: string) => {
   const isText = text
     ? `_type == "video" && category match "${text}"`
     : `_type == "video"`;
-  const query = `*[${isText}] | order(_createdAt desc) {..., "likes":count(likes), "author":author-> {name, profile_image, _id, fullname}}`;
+  const query = `*[${isText}] | order(_createdAt desc) {..., "likes":count(likes), "author":author-> {name, image, _id, fullname}}`;
   const options = { next: { revalidate: 30 } };
   const response = await client.fetch(query, {}, options);
   return response;
@@ -196,7 +210,9 @@ export const getInitialLikeArray = async (id: string) => {
 
 /* -----------------------------------------------COMMENTS----------------------------------------------------------------- */
 
-export const getVideoComments = async (videoId: string):Promise<CommentType[]> => {
+export const getVideoComments = async (
+  videoId: string
+): Promise<CommentType[]> => {
   const query = `*[_type == "comment" && references("${videoId}")] | order(_createdAt desc)
    {comment_text, _id, "likes":count(likes), _createdAt, "userId":userId->{name, image, _id}, reply[]{_key, reply_text, createdAt, uid->{name, _id, image}}}`;
   const options = { next: { tags: ["commentLikes"] } };
@@ -571,10 +587,24 @@ export const createPost = async (data: CreateVideoType) => {
       })),
     };
     await client.create(newPost);
+    revalidatePath("/");
     return { status: 200, message: "Post created successfully" };
   } catch (err) {
     return { status: 500, message: `${err}` };
   }
+};
+
+export const getVideoLikeStatus = async (
+  videoId: string,
+  userId: string
+): Promise<boolean> => {
+  const video = await client.fetch(
+    `*[_type =="video" && _id == "${videoId}"][0]{caption, likes, "author":author ->{_id}}`
+  );
+  const isLiked = video?.likes?.find(
+    (like: { _ref: string }) => like?._ref == userId
+  );
+  return isLiked ? true : false;
 };
 
 export const handleLikes = async (videoId: string, userId: string) => {
@@ -597,70 +627,8 @@ export const handleLikes = async (videoId: string, userId: string) => {
 
     if (!isLiked)
       await createNotification("like", userId, video?.author._id, videoId);
-
-    revalidateTag("videos");
-    revalidateTag("profileLikes");
-    revalidateTag("videoDetail");
-    /* console.log("video", video);
-        console.log("isLiked", isLiked);
-        console.log("updatedLikes", updatedLikes); */
     return { success: true, likesCount: updatedLikes.length };
   } catch (err) {
-    console.log("error message:", err);
     throw new Error(`error message: ${err}`);
   }
 };
-
-/* 
-
-
-
-
-export const getAllProducts = async(sort?:string | undefined, newQuery?:string | undefined, 
-    newPriceRange?:string | undefined, newRatings?:string | number, newCategory?:string | undefined)=>{
-    const filters = [`_type == "product"`]
-
-    if (newQuery) {
-        filters.push(
-          `(title match "${newQuery}" || description match "${newQuery}" || tags match "${newQuery}")`
-        );
-    }
-
-    if (newCategory) {
-        filters.push(
-          `(category match "${newCategory}")`
-        );
-    }
-
-        // Ratings Filter (Ensure it's a valid number)
-    if (newRatings) {
-        filters.push(`round(math::avg(rating)) == ${newRatings}`);
-    }
-
-    // Price Range Filter (Assuming newPriceRange is something like "10-50")
-    if (newPriceRange) {
-        const [minPrice, maxPrice] = newPriceRange?.split(",").map((item)=> Number(item));
-        if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-        filters.push(`basePrice >= ${minPrice} && basePrice <= ${maxPrice}`);
-        }
-    }
-
-    let query = `*[${filters.join(" && ")}]`;
-
-    // Sorting Logic
-    const sortOptions: Record<string, string> = {
-        "price-low-to-high": "basePrice asc",
-        "price-high-to-low": "basePrice desc",
-        "newest-first": "_createdAt desc",
-        "top-rated": "math::avg(rating) desc",
-    };
-
-    if (sort && sortOptions[sort]) {
-        query += ` | order(${sortOptions[sort]})`;
-    }
-
-    const response = await client.fetch(query)
-    return response
-}
-
-*/

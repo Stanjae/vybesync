@@ -1,14 +1,10 @@
-import { auth } from '@/auth'
+
 import { UDropzone } from '@/components/cui/UDropZone'
-import { redirect } from 'next/navigation'
+import { getAuthSession } from '@/lib/actions'
 import React from 'react'
 
 const page = async() => {
-  const session = await auth()
-
-  if (!session?.user) {
-    redirect('/')
-  }
+  const session = await getAuthSession()
   return (
     <div className=' bg-background'>
         <UDropzone session={session}/>

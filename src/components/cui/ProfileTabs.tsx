@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { BookmarkCheck, CalendarHeart, TvMinimalPlay } from 'lucide-react'
-import { VideoType } from '@/lib/definitions'
+import { VideoType } from '@/types/definitions.types'
 import ProfileVideoCard from './ProfileVideoCard'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useCounterStore } from '@/providers/zustand-store'

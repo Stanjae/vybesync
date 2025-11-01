@@ -1,7 +1,6 @@
-import { fetchUserBookmarks, getInitialFollowingArray, getInitialLikeArray, handleFollow, handleLikes, handleToogleBookmarks } from '@/lib/actions';
-import { VideoType } from '@/lib/definitions';
+import { fetchUserBookmarks, getInitialFollowingArray, handleFollow, handleToogleBookmarks } from '@/lib/actions';
+import { VideoType } from '@/types/definitions.types';
 import { persist, createJSONStorage } from 'zustand/middleware'
-// src/stores/counter-store.ts
 import { createStore } from 'zustand/vanilla';
 
 export type SessionType = {
@@ -13,20 +12,15 @@ export type SessionType = {
 
 export type CounterState = {
   session: SessionType | null;
-  likedVideos:Array<string>;
   bookmarked:VideoType[];
-  likeCounts: Record<string, number>;  // Object to track likes per video
   following: Array<string>;
 }
 
 export type CounterActions = {
   setSession:(session:SessionType) => void;
   deleteSession:() => void;
-  toggleLike: (videoId: string, userId: string) => void;
   togglefollow: (celebrityId: string, userId: string) => void;
   togglebookmark: (userId: string, video: VideoType) => void;
-  fetchLikesCount?: (videoId: string) => void;
-  setLikesCount:(videoId: string, count:number, userId:string) => void;
   setFollowing:(userId:string, celebrityId:string) => void;
   fetchBookmarked:(celebrityId:string) => void;
 }
@@ -34,14 +28,12 @@ export type CounterActions = {
 export type CounterStore = CounterState & CounterActions
 
 export const initCounterStore = (): CounterState => {
-  return {session:null, likedVideos: [], bookmarked: [], likeCounts:{}, following:[]}
+  return {session:null, bookmarked: [], following:[]}
 }
 
 export const defaultInitState: CounterState = {
   session:null,
-  likedVideos: [],
   bookmarked: [],
-  likeCounts:{},
   following:[]
 }
 
@@ -57,33 +49,6 @@ export const createCounterStore = (initState: CounterState = defaultInitState) =
       set(() => ({session:null}))
     },
 
-    toggleLike: async (videoId, userId) => {
-      const isLiked = get().likedVideos.includes(videoId);
-      
-      // Optimistically update state
-      set((state) => ({
-        likedVideos: isLiked ? state.likedVideos.filter((id) => id !== videoId) : [...state.likedVideos, videoId], // Add like
-        likeCounts: {
-          ...state.likeCounts,
-          [videoId]: (state.likeCounts[videoId] || 0) + (isLiked ? -1 : 1), // Adjust like count
-        },
-      }));
-  
-      try {
-        await handleLikes(videoId, userId);
-      } catch (error) {
-        console.error('Like/Unlike failed', error);
-  
-        // Revert state if request fails
-        set((state) => ({
-          likedVideos: isLiked ? [...state.likedVideos, videoId] : state.likedVideos.filter((id) => id !== videoId),
-          likeCounts: {
-            ...state.likeCounts,
-            [videoId]: (state.likeCounts[videoId] || 0) - (isLiked ? -1 : 1),
-          },
-        }));
-      }
-    },
 
     setFollowing:async(userId, celebrityId)=>{
       try{
@@ -98,24 +63,6 @@ export const createCounterStore = (initState: CounterState = defaultInitState) =
       }
     },
 
-    setLikesCount:async(videoId, count, userId)=>{
-      set((state) => ({
-        likeCounts: {
-          ...state.likeCounts,
-          [videoId]: count
-        },
-      }));
-      try{
-        const response:Array<string> = await getInitialLikeArray(videoId);
-        const newUserId = userId || '';
-
-        set((state) => ({
-          likedVideos: response?.includes(newUserId) ? [...state.likedVideos, videoId] : [...state.likedVideos],
-        }));
-      }catch(err){
-        console.error('Failed to fetch like count', err);
-      }
-    },
 
     togglefollow: async (celebrityId, userId) => {
       const isFollowing = get().following.includes(celebrityId);
@@ -167,17 +114,6 @@ export const createCounterStore = (initState: CounterState = defaultInitState) =
         }));
       }
     },
-
-    /* fetchLikesCount: async (videoId) => {
-      try {
-        const { data } = await axios.get(`/api/like?videoId=${videoId}`);
-        set((state) => ({
-          likeCounts: { ...state.likeCounts, [videoId]: data.likesCount },
-        }));
-      } catch (error) {
-        console.error('Failed to fetch like count', error);
-      }
-    }, */
   }),
   {
     name: 'vibesync', // name of the item in the storage (must be unique)
@@ -185,64 +121,3 @@ export const createCounterStore = (initState: CounterState = defaultInitState) =
   })
 )
 }
-
-
-/* 
-import { create } from 'zustand';
-import axios from 'axios';
-
-interface LikeStore {
-  likedVideos: string[];  // Array to track liked videos
-  likeCounts: Record<string, number>;  // Object to track likes per video
-
-  toggleLike: (videoId: string, userId: string) => void;
-  fetchLikesCount: (videoId: string) => void;
-}
-
-export const useLikeStore = create<LikeStore>((set, get) => ({
-  likedVideos: [],
-  likeCounts: {},
-
-  toggleLike: async (videoId, userId) => {
-    const isLiked = get().likedVideos.includes(videoId);
-    
-    // Optimistically update state
-    set((state) => ({
-      likedVideos: isLiked
-        ? state.likedVideos.filter((id) => id !== videoId) // Remove like
-        : [...state.likedVideos, videoId], // Add like
-      likeCounts: {
-        ...state.likeCounts,
-        [videoId]: (state.likeCounts[videoId] || 0) + (isLiked ? -1 : 1), // Adjust like count
-      },
-    }));
-
-    try {
-      await axios.post('/api/like', { videoId, userId });
-    } catch (error) {
-      console.error('Like/Unlike failed', error);
-
-      // Revert state if request fails
-      set((state) => ({
-        likedVideos: isLiked ? [...state.likedVideos, videoId] : state.likedVideos.filter((id) => id !== videoId),
-        likeCounts: {
-          ...state.likeCounts,
-          [videoId]: (state.likeCounts[videoId] || 0) - (isLiked ? -1 : 1),
-        },
-      }));
-    }
-  },
-
-  fetchLikesCount: async (videoId) => {
-    try {
-      const { data } = await axios.get(`/api/like?videoId=${videoId}`);
-      set((state) => ({
-        likeCounts: { ...state.likeCounts, [videoId]: data.likesCount },
-      }));
-    } catch (error) {
-      console.error('Failed to fetch like count', error);
-    }
-  },
-}));
-
-*/

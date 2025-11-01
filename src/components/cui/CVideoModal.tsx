@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef } from "react";
 import { Modal, ModalBody, ModalTrigger } from "../ui/animated-modal";
-import { VideoType } from "@/lib/definitions";
+import { VideoType } from "@/types/definitions.types";
 import { CldVideoPlayer } from "next-cloudinary";
 import DetailedSearchInput from "./DetailedSearchInput";
 import { updateViewCount } from "@/lib/actions";
