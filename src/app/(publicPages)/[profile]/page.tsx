@@ -8,7 +8,8 @@ import { getAuthSession, getProfile } from "@/lib/actions";
 import { ProfileType, SearchParams } from "@/types/definitions.types";
 import { BadgeCheck, MoreHorizontal, Settings, Share } from "lucide-react";
 import Image from "next/image";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
+import { resolveParams } from "@/lib/helpers/helperActions";
 
 const page = async ({
   params,
@@ -22,7 +23,7 @@ const page = async ({
   const newSort = searchP?.sort;
 
   const session = await getAuthSession();
-  const response: ProfileType = await getProfile(profile.replace("%40", ""));
+  const response: ProfileType = await getProfile(resolveParams(profile));
 
   const imageUrl = response?.image
   return (
@@ -38,7 +39,7 @@ const page = async ({
         <div className=" grow space-y-2.5">
           <div className=" flex md:justify-normal justify-center items-center gap-2">
             <h1 className=" text-background text-xl sm:text-2xl font-bold">
-              {response?.fullname}
+              {response?.name}
             </h1>
             <BadgeCheck className=" text-badge-custom" />
             <h2 className=" hidden sm:block text-lg text-background/75">

@@ -11,7 +11,7 @@ import {
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
   
-  export function AlertDialogDemo({description, trigger}:{description:string; trigger:React.ReactNode}) {
+export function AlertDialogDemo({ description, trigger , btnAction}: { description: string; trigger: React.ReactNode;  btnAction?: () => void }) {
     return (
       <AlertDialog >
         <AlertDialogTrigger asChild>
@@ -26,7 +26,7 @@ import {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className=" bg-muted-custom">Cancel</AlertDialogCancel>
-            <AlertDialogAction className=" text-primary-custom">Continue</AlertDialogAction>
+            <AlertDialogAction onClick={btnAction} className=" text-primary-custom">Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

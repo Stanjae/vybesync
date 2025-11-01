@@ -49,7 +49,7 @@ const UploadNav = () => {
         </div>
         <SheetFooter>
         <div className=' py-10 mt-auto'>
-            <Button asChild variant={'link'}><Link href={'/'}> <ChevronLeft/> Back to Vybesync</Link></Button>
+            <Button asChild variant={'link'}><a href={'/'}> <ChevronLeft/> Back to Vybesync</a></Button>
         </div>
         </SheetFooter>
     </SheetContent>

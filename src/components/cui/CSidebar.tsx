@@ -25,6 +25,7 @@ import Pusher from "pusher-js";
 import { toast } from "sonner";
 import { NotificationType } from "@/types/definitions.types";
 import { TSessionType } from "@/types/auth.types";
+import useHandleAuth from "@/hooks/useHandleAuth";
 
 const navigation = [
   { title: "For You", href: "/", icon: <Home className=" size-7" /> },
@@ -53,6 +54,8 @@ const CSidebar = ({ session }: { session: TSessionType | null }) => {
   const { setSession, deleteSession, fetchBookmarked } = useCounterStore(
     (state) => state
   );
+
+  const { signOut} = useHandleAuth();
 
   useEffect(() => {
     if (session?.user) {
@@ -301,7 +304,8 @@ const CSidebar = ({ session }: { session: TSessionType | null }) => {
                     Logout
                   </Button>
                 }
-                description="This action cannot be undone. This will log you out of your account"
+                  description="This action cannot be undone. This will log you out of your account"
+                  btnAction={signOut}
               />
             )}
           </div>

@@ -7,3 +7,8 @@ export const getDeviceType = (width: number) => {
   if (width < BREAKPOINTS.desktop) return "desktop";
   return "wide";
 };
+
+
+export const resolveParams = (params: string) => {
+  return decodeURIComponent(params).replace(/@/g, '');
+}

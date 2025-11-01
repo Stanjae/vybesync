@@ -95,6 +95,7 @@ export const getVideos = async (): Promise<VideoType[]> => {
 };
 
 export const getProfile = async (slug: string) => {
+  console.log(slug);
   const query = `*[_type == "user" && name match ["${slug}*", "*${slug}",]][0] {
     profile_image, image, phoneNumber, _createdAt, name, _id, fullname, _updatedAt, bio, email}`;
   const options = { next: { revalidate: 30, tags: ["profile"] } };
