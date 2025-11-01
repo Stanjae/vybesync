@@ -7,7 +7,7 @@ import DetailFollowBtn from "../DetailFollowBtn";
 import BookmarkBtn from "../BookmarkBtn";
 import { CommentTabs } from "../CommentTabs";
 import { Button } from "../../ui/button";
-import { VideoType } from '@/lib/definitions';
+import { VideoType } from '@/types/definitions.types';
 import { DetailTypeButton } from '../TypeButton';
 import {
   Code,

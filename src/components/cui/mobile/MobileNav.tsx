@@ -1,11 +1,11 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Compass, Home, MessageSquareText, Plus, User } from 'lucide-react'
-import { Session } from 'next-auth'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { LoginDialogDemo } from './LoginModal'
+import { TSessionType } from '@/types/auth.types'
 
 const navigation = [
     { title: 'For You', href: '/',  icon:<Home className=' size-7'/> },
@@ -16,12 +16,12 @@ const navigation = [
     
     
 ]
-const MobileNav = ({session}:{session:Session | null}) => {
+const MobileNav = ({session}:{session:TSessionType | null}) => {
     const router = useRouter();
     const [open, setOpen] = useState(false)
 
     const handleNav =(item:string)=>{
-        if(!session?.user){
+        if(!session?.user?.id){
             setOpen(true)
             return
         }
