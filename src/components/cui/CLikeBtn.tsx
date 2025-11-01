@@ -5,6 +5,7 @@ import millify from "millify";
 import { Skeleton } from "../ui/skeleton";
 import { useEffect, useState } from "react";
 import useHandleLikes from "@/hooks/useHandleLikes";
+import { toast } from "sonner";
 
 const CLikeBtn = ({
   videoId,
@@ -25,6 +26,10 @@ const CLikeBtn = ({
 
   const handleLikeAction = async () => {
     try {
+        if (!userId) {
+          toast.warning("You must be logged in!");
+          return;
+        }
       if (status) {
         setStatus(false);
         setLikeCount(likeCount - 1);
